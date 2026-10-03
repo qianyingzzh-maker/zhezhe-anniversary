@@ -10,8 +10,44 @@
       if (entry.textContent !== label) entry.textContent = label;
     });
   };
+  let routeFrame;
+  const drawPostcardRoute = () => {
+    const host = document.querySelector('.book-postcards');
+    if (!host || window.innerWidth <= 760) return;
+    const cards = [...host.querySelectorAll('.book-postcard')];
+    const entries = cards.map(card => card.querySelector('.postcard-open'));
+    if (entries.length !== 3 || entries.some(entry => !entry)) return;
+    let svg = host.querySelector('.postcard-thread');
+    if (!svg) {
+      svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.classList.add('postcard-thread');
+      svg.setAttribute('aria-hidden', 'true');
+      host.appendChild(svg);
+    }
+    const bounds = host.getBoundingClientRect();
+    svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
+    const points = entries.map(entry => {
+      const rect = entry.getBoundingClientRect();
+      return {x:rect.left + rect.width / 2 - bounds.left, y:rect.bottom + 7 - bounds.top};
+    });
+    const [a,b,c] = points;
+    const first = cards[0].getBoundingClientRect();
+    const startX = first.left - bounds.left + 18;
+    const bendX = Math.min(bounds.width - 6, Math.max(a.x,b.x) + 24);
+    const d = `M ${startX} ${a.y + 10} Q ${(startX+a.x)/2} ${a.y+13} ${a.x} ${a.y} C ${bendX} ${a.y} ${bendX} ${b.y-25} ${b.x} ${b.y} C ${b.x+18} ${b.y+38} ${c.x+55} ${c.y-12} ${c.x} ${c.y}`;
+    svg.innerHTML = `<path d="${d}"/>` + points.map(point => `<circle cx="${point.x}" cy="${point.y}" r="3"/>`).join('');
+  };
+  const scheduleRoute = () => {
+    cancelAnimationFrame(routeFrame);
+    routeFrame = requestAnimationFrame(drawPostcardRoute);
+  };
+  window.addEventListener('resize', scheduleRoute);
+  document.addEventListener('transitionend', scheduleRoute);
+  document.addEventListener('animationend', scheduleRoute);
+  document.addEventListener('load', scheduleRoute, true);
   simplifyPostcardEntry();
-  new MutationObserver(simplifyPostcardEntry).observe(document.getElementById('root'), { childList: true, subtree: true });
+  scheduleRoute();
+  new MutationObserver(records => { if (records.every(record => record.target.closest?.('.postcard-thread'))) return; simplifyPostcardEntry(); scheduleRoute(); }).observe(document.getElementById('root'), { childList: true, subtree: true });
   const render = () => {
     const playing = !audio.paused && !audio.ended;
     button.classList.toggle('is-playing', playing);
