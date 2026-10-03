@@ -134,3 +134,15 @@
     background:linear-gradient(90deg,#c39aaa70,transparent);
   }
 }
+
+/* Keep the editable garden dedication visible on narrow screens. */
+@media (width<=760px) {
+  .anniv-gate .anniv-gate__hint {
+    display:block; top:calc(76px + env(safe-area-inset-top,0px));
+    bottom:auto; left:50%; right:auto; transform:translateX(-50%);
+    width:max-content; max-width:calc(100% - 44px);
+    margin:0; padding:8px 14px; text-align:center;
+    font-size:.66rem; line-height:1.5; letter-spacing:.1em;
+    overflow-wrap:anywhere; border-radius:999px;
+  }
+}
