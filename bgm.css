@@ -135,13 +135,18 @@
   }
 }
 
-/* Keep the editable garden dedication visible on narrow screens. */
+/* Place the mobile dedication below the entrance in natural flow. */
 @media (width<=760px) {
+  .anniv-gate {
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .anniv-gate .gate-pass {
+    position:relative; inset:auto; flex:none; padding-bottom:0;
+  }
   .anniv-gate .anniv-gate__hint {
-    display:block; top:calc(76px + env(safe-area-inset-top,0px));
-    bottom:auto; left:50%; right:auto; transform:translateX(-50%);
+    display:block; position:relative; inset:auto; transform:none; flex:none;
     width:max-content; max-width:calc(100% - 44px);
-    margin:0; padding:8px 14px; text-align:center;
+    margin:8px auto max(18px, env(safe-area-inset-bottom,0px)); padding:8px 14px; text-align:center;
     font-size:.66rem; line-height:1.5; letter-spacing:.1em;
     overflow-wrap:anywhere; border-radius:999px;
   }
