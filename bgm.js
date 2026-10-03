@@ -4,6 +4,14 @@
   let enabled = true;
   let pending = false;
   audio.volume = 0.45;
+  const simplifyPostcardEntry = () => {
+    document.querySelectorAll('.postcard-open').forEach(entry => {
+      const label = entry.textContent.replace(/[↗\uFE0F]/g, '').trim();
+      if (entry.textContent !== label) entry.textContent = label;
+    });
+  };
+  simplifyPostcardEntry();
+  new MutationObserver(simplifyPostcardEntry).observe(document.getElementById('root'), { childList: true, subtree: true });
   const render = () => {
     const playing = !audio.paused && !audio.ended;
     button.classList.toggle('is-playing', playing);
