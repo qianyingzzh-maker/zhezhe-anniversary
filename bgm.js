@@ -35,6 +35,37 @@
   };
   document.addEventListener('pointerdown', unlock);
   document.addEventListener('keydown', unlock);
+  // A single quiet, dry click, generated locally without another sound file.
+  let clickContext;
+  let clickBuffer;
+  document.addEventListener('click', () => {
+    try {
+      const Context = window.AudioContext || window.webkitAudioContext;
+      if (!Context) return;
+      if (!clickContext) {
+        clickContext = new Context();
+        clickBuffer = clickContext.createBuffer(1, Math.ceil(clickContext.sampleRate * 0.018), clickContext.sampleRate);
+        const samples = clickBuffer.getChannelData(0);
+        for (let i = 0; i < samples.length; i++) {
+          samples[i] = (Math.random() * 2 - 1) * Math.exp(-i / (samples.length * 0.13));
+        }
+      }
+      const playClick = () => {
+        const source = clickContext.createBufferSource();
+        const gain = clickContext.createGain();
+        const filter = clickContext.createBiquadFilter();
+        source.buffer = clickBuffer;
+        filter.type = 'lowpass';
+        filter.frequency.value = 2400;
+        gain.gain.value = 0.075;
+        source.connect(filter).connect(gain).connect(clickContext.destination);
+        source.onended = () => { source.disconnect(); filter.disconnect(); gain.disconnect(); };
+        source.start();
+      };
+      if (clickContext.state === 'suspended') clickContext.resume().then(playClick).catch(() => {});
+      else if (clickContext.state === 'running') playClick();
+    } catch (_) { /* Sound support must never block a page action. */ }
+  }, true);
   audio.addEventListener('play', render);
   audio.addEventListener('pause', render);
   audio.addEventListener('error', () => {
