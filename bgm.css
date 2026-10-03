@@ -33,3 +33,36 @@
   .film-diary .postcard-open:before {left:-18px;top:-17px;width:57px;height:57px;transform:rotate(-8deg);}
   .film-diary .postcard-open:after {right:-11px;bottom:-10px;width:32px;height:29px;background-image:url("./rose-bloom.svg");transform:rotate(8deg);}
 }
+
+/* Keep postcard content together instead of stretching the paper footer. */
+.postcard-copy small:empty { display:none; }
+@media (width>760px) {
+  .book-postcard {
+    display:grid; grid-template-columns:minmax(0,1fr) auto;
+    align-items:center; column-gap:10px; row-gap:0;
+    padding-bottom:13px;
+  }
+  .book-postcard>.city-art { grid-column:1 / -1; }
+  .book-postcard .postcard-copy { min-height:0; padding:13px 2px 1px; }
+  .book-postcard .postcard-copy strong { font-size:clamp(.9rem,1.2vw,1.08rem); line-height:1.35; }
+  .book-postcard .postcard-copy small { padding-right:0; }
+  .book-postcard .postcard-open {
+    position:relative; bottom:auto; right:auto; opacity:1; transform:none;
+    align-self:center; white-space:nowrap; font-size:.58rem;
+    margin:12px 18px 0 0; padding:3px 0;
+  }
+  .book-postcard:after {
+    background-image:url("./rose-bloom.svg");
+    background-size:24px 23px; background-position:right 1px bottom 1px;
+  }
+}
+@media (width<=760px) {
+  .film-diary__frames, .film-diary .book-postcards { min-height:0; height:auto; }
+  .film-diary .book-postcard { position:relative; inset:auto; padding-bottom:16px; }
+  .film-diary .postcard-copy { min-height:0; padding:16px 12px 0; }
+  .film-diary .postcard-copy strong { font-size:clamp(1.06rem,4.9vw,1.26rem); line-height:1.4; }
+  .film-diary .postcard-copy small { margin-top:5px; }
+  .film-diary .postcard-open { margin:18px 24px 7px; min-height:38px; padding:10px 30px; }
+  .film-diary .postcard-open:before { width:48px; height:48px; left:-15px; top:-12px; }
+  .film-diary .postcard-open:after { width:27px; height:25px; right:-10px; bottom:-8px; }
+}
