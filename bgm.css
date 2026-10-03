@@ -66,3 +66,36 @@
   .film-diary .postcard-open:before { width:48px; height:48px; left:-15px; top:-12px; }
   .film-diary .postcard-open:after { width:27px; height:25px; right:-10px; bottom:-8px; }
 }
+
+/* Small keepsake labels; leave the city photograph visible. */
+.book-postcard .postcard-city {
+  top:14px; left:14px; padding:3px 7px;
+  font-size:.55rem; line-height:1.3; letter-spacing:.09em;
+  color:#765064; background:#fff4eddf;
+  border:1px solid #dab8c5a6; border-radius:3px 9px 3px 9px;
+  box-shadow:0 2px 5px #55334b10; backdrop-filter:blur(3px);
+}
+.book-postcard .postcard-stamp {
+  top:14px; right:14px; min-width:0; max-width:100px;
+  padding:3px 6px; font-size:.39rem; line-height:1.35;
+  letter-spacing:.07em; color:#765064; background:#fff4edd9;
+  border:1px solid #dab8c58c; border-radius:8px 2px 8px 2px;
+  backdrop-filter:blur(3px);
+}
+.book-postcard .postcard-stamp small {font-size:.34rem; line-height:1.2;}
+@media (width<=760px) {
+  .film-diary .postcard-copy {
+    min-height:0; padding:17px 13px 0 28px; text-align:right;
+  }
+  .film-diary .postcard-copy strong {
+    font-size:clamp(1rem,4.5vw,1.2rem); line-height:1.45;
+    white-space:nowrap; font-weight:500;
+  }
+  .film-diary .postcard-copy small {margin-top:6px;}
+  .film-diary .postcard-open {
+    display:flex; width:fit-content; max-width:calc(100% - 52px);
+    margin:25px auto 8px 24px; padding:9px 25px;
+    min-height:36px; font-size:.68rem; letter-spacing:.08em;
+  }
+  .film-diary .book-postcard {padding-bottom:16px;}
+}
